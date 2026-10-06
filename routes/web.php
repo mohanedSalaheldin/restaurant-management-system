@@ -14,6 +14,8 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('/table/{table_number}/{token}', [\App\Http\Controllers\PublicTableController::class, 'show'])->name('table.qr.view');
+
 // المسارات التي تتطلب تسجيل الدخول لجميع المستخدمين
 Route::middleware(['auth'])->group(function () {
 
@@ -40,6 +42,8 @@ Route::middleware(['auth'])->group(function () {
         // مسارات استعلام الـ Dropdowns التفاعلية
         Route::get('sections/{section}/categories-data', [\App\Http\Controllers\Admin\MenuItemController::class, 'getCategoriesBySection'])->name('sections.categories.data');
         Route::get('categories/{category}/subcategories-data', [\App\Http\Controllers\Admin\MenuItemController::class, 'getSubcategoriesByCategory'])->name('categories.subcategories.data');
+        Route::resource('tables', \App\Http\Controllers\Admin\TableController::class);
+        Route::post('tables/{table}/regenerate-qr', [\App\Http\Controllers\Admin\TableController::class, 'regenerateQr'])->name('tables.regenerate.qr');
 
         Route::resource('users', StaffController::class)->only(['index', 'create', 'store']);
     });
