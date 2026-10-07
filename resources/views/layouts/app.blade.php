@@ -105,10 +105,17 @@
                         <i class="bi bi-card-list"></i> Menu Items
                     </a>
                 </li>
-                <a href="{{ route('admin.tables.index') }}"
-                    class="nav-link {{ request()->routeIs('admin.tables.*') ? 'active' : '' }}">
-                    <i class="bi bi-grid-3x3-gap"></i> Tables
-                </a>
+                <li>
+                    <a href="{{ route('admin.tables.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.tables.*') ? 'active' : '' }}">
+                        <i class="bi bi-grid-3x3-gap"></i> Tables
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.offers.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.offers.*') ? 'active' : '' }}">
+                        <i class="bi bi-percent"></i> Offers & Discounts
+                    </a>
                 </li>
                 <li>
                     <a href="#" class="nav-link text-secondary">

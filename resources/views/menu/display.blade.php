@@ -97,13 +97,43 @@
                                                                                     alt="{{ $item->name }}">
 
                                                                                 <div class="card-body d-flex flex-column">
+                                                                                    <!-- كتلة العنوان وشارة العرض والأسعار بعد الخصم -->
                                                                                     <div
                                                                                         class="d-flex justify-content-between align-items-start mb-2">
-                                                                                        <h6
-                                                                                            class="card-title fw-bold mb-0 text-dark">
-                                                                                            {{ $item->name }}</h6>
-                                                                                        <span
-                                                                                            class="fs-6 fw-bold text-success">${{ number_format($item->price, 2) }}</span>
+                                                                                        <div>
+                                                                                            <h6
+                                                                                                class="card-title fw-bold mb-0 text-dark">
+                                                                                                {{ $item->name }}</h6>
+                                                                                            @if ($item->active_offer && $item->active_offer->display_on_menu)
+                                                                                                <span
+                                                                                                    class="badge bg-danger text-uppercase fw-bold"
+                                                                                                    style="font-size: 0.7rem;">
+                                                                                                    <i
+                                                                                                        class="bi bi-fire me-1"></i>OFFER:
+                                                                                                    {{ $item->active_offer->name }}
+                                                                                                </span>
+                                                                                            @endif
+                                                                                        </div>
+                                                                                        <div class="text-end">
+                                                                                            @if ($item->active_offer)
+                                                                                                <div
+                                                                                                    class="text-muted text-decoration-line-through small">
+                                                                                                    ${{ number_format($item->price, 2) }}
+                                                                                                </div>
+                                                                                                <div
+                                                                                                    class="fs-5 fw-bold text-danger">
+                                                                                                    ${{ number_format($item->final_price, 2) }}
+                                                                                                </div>
+                                                                                                <div class="text-muted"
+                                                                                                    style="font-size: 0.65rem;">
+                                                                                                    Valid till
+                                                                                                    {{ $item->active_offer->end_date->format('M d') }}
+                                                                                                </div>
+                                                                                            @else
+                                                                                                <span
+                                                                                                    class="fs-6 fw-bold text-success">${{ number_format($item->price, 2) }}</span>
+                                                                                            @endif
+                                                                                        </div>
                                                                                     </div>
 
                                                                                     <p

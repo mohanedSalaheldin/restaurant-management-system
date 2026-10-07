@@ -44,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('categories/{category}/subcategories-data', [\App\Http\Controllers\Admin\MenuItemController::class, 'getSubcategoriesByCategory'])->name('categories.subcategories.data');
         Route::resource('tables', \App\Http\Controllers\Admin\TableController::class);
         Route::post('tables/{table}/regenerate-qr', [\App\Http\Controllers\Admin\TableController::class, 'regenerateQr'])->name('tables.regenerate.qr');
-
+        Route::resource('offers', \App\Http\Controllers\Admin\OfferController::class);
         Route::resource('users', StaffController::class)->only(['index', 'create', 'store']);
     });
 

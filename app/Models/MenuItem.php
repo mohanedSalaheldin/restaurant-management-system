@@ -43,4 +43,26 @@ class MenuItem extends Model
     {
         return $this->belongsTo(Subcategory::class);
     }
+
+    public function offers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Offer::class, 'offer_menu_item')->withTimestamps();
+    }
+
+    /**
+     * الحصول على العرض النشط الحالي لهذا الصنف (إن وُجد)
+     */
+    public function getActiveOfferAttribute(): ?Offer
+    {
+        return $this->offers->first(fn($offer) => $offer->isValidNow());
+    }
+
+    /**
+     * الحصول على السعر النهائي بعد الخصم
+     */
+    public function getFinalPriceAttribute(): float
+    {
+        $activeOffer = $this->active_offer;
+        return $activeOffer ? $activeOffer->calculateDiscountedPrice((float) $this->price) : (float) $this->price;
+    }
 }

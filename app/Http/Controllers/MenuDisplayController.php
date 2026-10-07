@@ -13,7 +13,7 @@ class MenuDisplayController extends Controller
      */
     public function index(Request $request): View
     {
-        // جلب الأقسام النشطة مع تصنيفاتها وتصنيفاتها الفرعية وأصنافها المتاحة
+        // جلب الأقسام النشطة مع تصنيفاتها وتصنيفاتها الفرعية وأصنافها المتاحة وعروضها
         $sections = Section::where('status', true)
             ->orderBy('display_order')
             ->with([
@@ -24,7 +24,7 @@ class MenuDisplayController extends Controller
                     $q->where('status', true)->orderBy('display_order');
                 },
                 'categories.subcategories.items' => function ($q) {
-                    $q->where('availability', 'available');
+                    $q->where('availability', 'available')->with('offers');
                 }
             ])
             ->get();
