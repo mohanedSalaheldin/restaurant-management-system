@@ -25,6 +25,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     // مسار استعراض المنيو
     Route::get('/menu-view', [\App\Http\Controllers\MenuDisplayController::class, 'index'])->name('menu.display');
+    // مسارات الطلبات المشتركة (Admin & Waiter)
+    Route::resource('orders', \App\Http\Controllers\OrderController::class)->except(['destroy', 'edit', 'update']);
+    Route::patch('orders/{order}/status', [\App\Http\Controllers\OrderController::class, 'updateStatus'])->name('orders.update-status');
 
     // 1. مسارات المسؤول (Admin)
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -67,6 +70,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/view', function () {
             return view('kitchen.view');
         })->name('view');
+    });
+    // مسارات شاشة المطبخ KDS
+    Route::middleware(['role:admin,kitchen_staff'])->group(function () {
+        Route::get('/kitchen/kds', [\App\Http\Controllers\KitchenController::class, 'index'])->name('kitchen.kds');
+        Route::get('/kitchen/orders-data', [\App\Http\Controllers\KitchenController::class, 'fetchActiveOrders'])->name('kitchen.orders.data');
+        Route::patch('/kitchen/orders/{order}/status', [\App\Http\Controllers\KitchenController::class, 'updateStatus'])->name('kitchen.order.status');
     });
 });
 

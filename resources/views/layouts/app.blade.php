@@ -118,8 +118,20 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('orders.index') }}"
+                        class="nav-link {{ request()->routeIs('orders.*') ? 'active' : '' }}">
+                        <i class="bi bi-receipt"></i> Orders
+                    </a>
+                </li>
+                <li>
                     <a href="#" class="nav-link text-secondary">
                         <i class="bi bi-bar-chart"></i> Reports
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('kitchen.kds') }}"
+                        class="nav-link {{ request()->routeIs('kitchen.kds') ? 'active' : '' }}">
+                        <i class="bi bi-fire"></i> KDS Screen
                     </a>
                 </li>
             @elseif($role === 'waiter')
@@ -130,8 +142,15 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link text-secondary">
+                    <a href="{{ route('orders.create') }}"
+                        class="nav-link {{ request()->routeIs('orders.create') ? 'active' : '' }}">
                         <i class="bi bi-plus-circle"></i> New Order
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('orders.index') }}"
+                        class="nav-link {{ request()->routeIs('orders.index') ? 'active' : '' }}">
+                        <i class="bi bi-receipt"></i> Orders List
                     </a>
                 </li>
                 <li>
@@ -158,9 +177,9 @@
                 </li>
             @elseif($role === 'kitchen_staff')
                 <li class="nav-item">
-                    <a href="{{ route('kitchen.view') }}"
-                        class="nav-link {{ request()->routeIs('kitchen.view') ? 'active' : '' }}">
-                        <i class="bi bi-fire"></i> Kitchen Display
+                    <a href="{{ route('kitchen.kds') }}"
+                        class="nav-link {{ request()->routeIs('kitchen.kds') ? 'active' : '' }}">
+                        <i class="bi bi-fire"></i> Kitchen Display (KDS)
                     </a>
                 </li>
             @endif
