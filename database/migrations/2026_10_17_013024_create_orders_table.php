@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->string('order_number')->unique();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete(); // النادل أو المستخدم المنشئ
-            $table->foreignId('table_id')->nullable()->constrained()->nullOnDelete(); // اختياري في حال Takeaway
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('table_id')->nullable()->constrained()->nullOnDelete(); // null for takeaway orders
             $table->enum('order_type', ['dine_in', 'takeaway'])->default('dine_in');
             $table->unsignedInteger('guest_count')->default(1);
             $table->enum('status', [

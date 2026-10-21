@@ -39,9 +39,6 @@ class Offer extends Model
         return $this->belongsToMany(MenuItem::class, 'offer_menu_item')->withTimestamps();
     }
 
-    /**
-     * فحص ما إذا كان العرض سارياً وصالحاً في اللحظة الراهنة
-     */
     public function isValidNow(): bool
     {
         if (! $this->status) {
@@ -53,17 +50,14 @@ class Offer extends Model
         $currentTime = $now->format('H:i:s');
         $currentDay = $now->format('D'); // Mon, Tue, etc.
 
-        // فحص التواريخ
         if ($todayDate < $this->start_date->toDateString() || $todayDate > $this->end_date->toDateString()) {
             return false;
         }
 
-        // فحص أيام الأسبوع
         if (! empty($this->applicable_days) && ! in_array($currentDay, $this->applicable_days)) {
             return false;
         }
 
-        // فحص الأوقات (إن حُددت)
         if ($this->start_time && $this->end_time) {
             if ($currentTime < $this->start_time || $currentTime > $this->end_time) {
                 return false;
@@ -73,9 +67,6 @@ class Offer extends Model
         return true;
     }
 
-    /**
-     * حساب السعر بعد تطبيق الخصم على سعر معين
-     */
     public function calculateDiscountedPrice(float $originalPrice): float
     {
         if ($this->discount_type === 'percentage') {

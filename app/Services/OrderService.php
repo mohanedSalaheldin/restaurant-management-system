@@ -12,24 +12,17 @@ use Illuminate\Support\Facades\DB;
 
 class OrderService
 {
-    /**
-     * إنشاء طلب جديد (Draft أو Sent to Kitchen)
-     */
     public function createOrder(array $orderData, array $itemsData, int $userId): Order
     {
         return DB::transaction(function () use ($orderData, $itemsData, $userId) {
-            // 1. التحقق من الطاولة في حالة Dine-in
             if ($orderData['order_type'] === 'dine_in') {
                 $table = Table::findOrFail($orderData['table_id']);
 
-                // تحديث حالة الطاولة إلى مشغولة
                 $table->update(['status' => 'occupied']);
             }
 
-            // 2. توليد رقم طلب تسلسلي فريد لليوم
             $orderNumber = $this->generateOrderNumber();
 
-            // 3. إنشاء سجل الطلب المبدئي
             $order = Order::create([
                 'order_number'    => $orderNumber,
                 'user_id'         => $userId,
@@ -43,16 +36,12 @@ class OrderService
                 'total_amount'    => 0,
             ]);
 
-            // 4. إضافة الأصناف وحساب المبالغ
             $this->syncOrderItems($order, $itemsData);
 
             return $order->fresh(['items.menuItem', 'table', 'user']);
         });
     }
 
-    /**
-     * تحديث عناصر الطلب والملاحظات
-     */
     public function updateOrder(Order $order, array $orderData, array $itemsData): Order
     {
         return DB::transaction(function () use ($order, $orderData, $itemsData) {
@@ -65,7 +54,6 @@ class OrderService
                 'notes'       => $orderData['notes'] ?? $order->notes,
             ]);
 
-            // إعادة ربط الأصناف وحساب الإجماليات
             $order->items()->delete();
             $this->syncOrderItems($order, $itemsData);
 
@@ -73,9 +61,6 @@ class OrderService
         });
     }
 
-    /**
-     * معالجة عناصر الطلب وتطبيق الخصومات وحساب الإجماليات
-     */
     protected function syncOrderItems(Order $order, array $itemsData): void
     {
         $subtotal = 0;
@@ -91,7 +76,6 @@ class OrderService
             $qty = (int) $itemInput['quantity'];
             $unitPrice = (float) $menuItem->price;
 
-            // فحص وجود عرض خصم سارٍ على الصنف
             $discountedPrice = $menuItem->final_price;
             $lineDiscount = ($unitPrice - $discountedPrice) * $qty;
             $lineSubtotal = $discountedPrice * $qty;
@@ -118,9 +102,6 @@ class OrderService
         ]);
     }
 
-    /**
-     * تحديث حالة الطلب مع معالجة حالة الطاولة (State Machine)
-     */
     public function updateOrderStatus(Order $order, string $newStatus): Order
     {
         return DB::transaction(function () use ($order, $newStatus) {
@@ -140,7 +121,7 @@ class OrderService
 
             $order->update(['status' => $newStatus]);
 
-            // إذا انتهى الطلب أو أُلغي، نحرر الطاولة إن لم توجد طلبات أخرى نشطة
+            // Free the table only when it has no other active orders
             if (in_array($newStatus, ['completed', 'cancelled']) && $order->table_id) {
                 $hasActiveOrders = Order::where('table_id', $order->table_id)
                     ->where('id', '!=', $order->id)
@@ -157,7 +138,7 @@ class OrderService
     }
 
     /**
-     * توليد رقم طلب مثل: ORD-20261017-0001
+     * Format: ORD-YYYYMMDD-NNNN, the sequence resets daily.
      */
     protected function generateOrderNumber(): string
     {

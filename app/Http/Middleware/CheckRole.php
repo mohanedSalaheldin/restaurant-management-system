@@ -28,7 +28,7 @@ class CheckRole
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'Access Denied: Unauthorized role.'], 403);
             }
-            abort(403, 'غير مصرح لك بالوصول إلى هذه الصفحة.');
+            abort(403, 'You are not authorized to access this page.');
         }
 
         return $next($request);

@@ -11,7 +11,6 @@
         </a>
     </div>
 
-    <!-- فلترة بحسب القسم والتصنيف -->
     <div class="card shadow-sm border-0 mb-3">
         <div class="card-body py-2">
             <form method="GET" action="{{ route('admin.subcategories.index') }}" class="row g-2 align-items-center">

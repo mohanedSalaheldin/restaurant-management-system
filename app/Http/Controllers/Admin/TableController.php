@@ -63,9 +63,6 @@ class TableController extends Controller
             ->with('success', 'Table deleted successfully.');
     }
 
-    /**
-     * إعادة توليد رمز الـ QR للطاولة
-     */
     public function regenerateQr(Table $table): RedirectResponse
     {
         $this->tableService->regenerateQrToken($table);

@@ -1,5 +1,5 @@
-<h1>شاشة المطبخ (Kitchen View)</h1>
+<h1>Kitchen View</h1>
 <form method="POST" action="{{ route('logout') }}">
     @csrf
-    <button type="submit">تسجيل الخروج</button>
+    <button type="submit">Log Out</button>
 </form>

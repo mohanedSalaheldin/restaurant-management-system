@@ -11,7 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // 1. جدول العروض
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
@@ -28,7 +27,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // 2. جدول الربط مع الأصناف (Pivot Table)
         Schema::create('offer_menu_item', function (Blueprint $table) {
             $table->id();
             $table->foreignId('offer_id')->constrained()->cascadeOnDelete();

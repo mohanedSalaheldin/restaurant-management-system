@@ -9,18 +9,13 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileService
 {
-    /**
-     * تحديث بيانات الملف الشخصي ورفع الصورة
-     */
     public function updateProfile(User $user, array $data, ?UploadedFile $avatar = null): User
     {
         if ($avatar) {
-            // حذف الصورة القديمة إن وُجدت
             if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
                 Storage::disk('public')->delete($user->avatar);
             }
 
-            // رفع الصورة الجديدة في storage/app/public/avatars
             $data['avatar'] = $avatar->store('avatars', 'public');
         }
 
@@ -34,7 +29,7 @@ class ProfileService
     }
 
     /**
-     * تحديث كلمة المرور بعد مطابقة القديمة
+     * Assumes the current password has already been verified.
      */
     public function updatePassword(User $user, string $newPassword): void
     {

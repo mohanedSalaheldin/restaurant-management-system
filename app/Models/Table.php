@@ -26,9 +26,6 @@ class Table extends Model
         'max_capacity' => 'integer',
     ];
 
-    /**
-     * توليد رمز مميز فريد لكل طاولة تلقائياً عند الإنشاء
-     */
     protected static function booted(): void
     {
         static::creating(function ($table) {
@@ -38,9 +35,6 @@ class Table extends Model
         });
     }
 
-    /**
-     * الحصول على الرابط الخاص بالزبون عند مسح الـ QR
-     */
     public function getQrUrlAttribute(): string
     {
         return route('table.qr.view', [

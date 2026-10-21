@@ -29,7 +29,7 @@ class OfferRequest extends FormRequest
             'end_time'         => ['nullable', 'date_format:H:i', 'after:start_time'],
             'applicable_days'  => ['nullable', 'array'],
             'applicable_days.*'=> ['string', 'in:Mon,Tue,Wed,Thu,Fri,Sat,Sun'],
-            'items'            => ['required', 'array', 'min:1'], // اختيار صنف واحد على الأقل
+            'items'            => ['required', 'array', 'min:1'],
             'items.*'          => ['exists:menu_items,id'],
             'status'           => ['nullable', 'boolean'],
             'display_on_menu'  => ['nullable', 'boolean'],

@@ -23,9 +23,6 @@ class TableService
         $table->delete();
     }
 
-    /**
-     * إعادة توليد رمز الـ QR للطاولة
-     */
     public function regenerateQrToken(Table $table): Table
     {
         $table->update([

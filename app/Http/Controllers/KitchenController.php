@@ -15,9 +15,6 @@ class KitchenController extends Controller
         protected OrderService $orderService
     ) {}
 
-    /**
-     * عرض شاشة المطبخ الرئيسية
-     */
     public function index(): View
     {
         $orders = Order::with(['table', 'user', 'items.menuItem'])
@@ -29,7 +26,7 @@ class KitchenController extends Controller
     }
 
     /**
-     * واجهة خلفية لإعادة جلب بيانات الطلبات دورياً
+     * Polled by the KDS screen to detect new orders.
      */
     public function fetchActiveOrders(): JsonResponse
     {
@@ -41,9 +38,6 @@ class KitchenController extends Controller
         return response()->json($orders);
     }
 
-    /**
-     * تحديث حالة الطلب من المطبخ
-     */
     public function updateStatus(Request $request, Order $order): JsonResponse
     {
         $request->validate([

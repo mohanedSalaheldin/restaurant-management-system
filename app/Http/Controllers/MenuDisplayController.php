@@ -8,12 +8,8 @@ use Illuminate\View\View;
 
 class MenuDisplayController extends Controller
 {
-    /**
-     * عرض قائمة المنيو التفاعلية بالكامل
-     */
     public function index(Request $request): View
     {
-        // جلب الأقسام النشطة مع تصنيفاتها وتصنيفاتها الفرعية وأصنافها المتاحة وعروضها
         $sections = Section::where('status', true)
             ->orderBy('display_order')
             ->with([

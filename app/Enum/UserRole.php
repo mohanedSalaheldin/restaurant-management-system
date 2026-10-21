@@ -16,7 +16,7 @@ enum UserRole: string
             self::ADMIN => 'admin.dashboard',
             self::WAITER => 'waiter.dashboard',
             self::CASHIER => 'cashier.dashboard',
-            self::KITCHEN_STAFF => 'kitchen.view',
+            self::KITCHEN_STAFF => 'kitchen.kds',
         };
     }
 }

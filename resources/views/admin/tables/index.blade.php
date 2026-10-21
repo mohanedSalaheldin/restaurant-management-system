@@ -119,10 +119,14 @@
                                 <div class="p-3 border rounded bg-white d-inline-block shadow-sm mb-3">
                                     {!! SimpleSoftwareIO\QrCode\Facades\QrCode::size(220)->generate($table->qr_url) !!}
                                 </div>
+                                <h4 class="fw-bold mb-1">Table {{ $table->table_number }}</h4>
                                 <h6 class="fw-bold mb-1">Scan for Menu</h6>
                                 <p class="text-muted small mb-0">
                                     {{ $table->location ? $table->location . ' - ' : '' }}{{ ucfirst($table->type) }}
                                     Table</p>
+                            </div>
+                            <div class="px-4 pb-3">
+                                <a href="{{ $table->qr_url }}" target="_blank" class="small text-break">{{ $table->qr_url }}</a>
                             </div>
                             <div class="modal-footer border-0 pt-0 d-flex justify-content-between">
                                 <form action="{{ route('admin.tables.regenerate.qr', $table) }}" method="POST">

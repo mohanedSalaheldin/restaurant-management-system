@@ -97,7 +97,6 @@
                                                                                     alt="{{ $item->name }}">
 
                                                                                 <div class="card-body d-flex flex-column">
-                                                                                    <!-- كتلة العنوان وشارة العرض والأسعار بعد الخصم -->
                                                                                     <div
                                                                                         class="d-flex justify-content-between align-items-start mb-2">
                                                                                         <div>
@@ -184,7 +183,7 @@
 
 @push('scripts')
     <script>
-        // تفعيل التبديل بين التصنيفات الفرعية وعرض أصنافها بسلاسة
+        // Subcategory tabs: show only the selected subcategory's items
         document.addEventListener('DOMContentLoaded', function() {
             const filterButtons = document.querySelectorAll('.subcat-filter-btn');
 
@@ -192,12 +191,10 @@
                 button.addEventListener('click', function() {
                     const parentAccordionBody = this.closest('.accordion-body');
 
-                    // إلغاء تفعيل كل الأزرار داخل هذا التصنيف
                     parentAccordionBody.querySelectorAll('.subcat-filter-btn').forEach(btn => btn
                         .classList.remove('active'));
                     this.classList.add('active');
 
-                    // إخفاء كل مجموعات الأصناف داخل هذا التصنيف وإظهار المجموعة المطلوبة
                     const targetId = this.getAttribute('data-target');
                     parentAccordionBody.querySelectorAll('.subcategory-items-block').forEach(
                         block => block.classList.add('d-none'));

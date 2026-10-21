@@ -13,10 +13,9 @@ class MenuSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. تجهيز صورة تجريبية في التخزين العام
         $sampleImagePath = 'menu_items/sample.jpg';
         if (!Storage::disk('public')->exists($sampleImagePath)) {
-            // صورة شفافة قياسية 1x1 بكسل لغرض الاختبار
+            // 1x1 transparent PNG used as a placeholder image
             $placeholderData = base64_decode('R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
             Storage::disk('public')->put($sampleImagePath, $placeholderData);
         }
@@ -43,7 +42,6 @@ class MenuSeeder extends Seeder
             ['description' => 'Traditional and herbal teas', 'display_order' => 2, 'status' => true]
         );
 
-        // أصناف القهوة
         MenuItem::updateOrCreate(
             ['name' => 'Espresso', 'subcategory_id' => $coffeeSub->id],
             [
@@ -72,7 +70,6 @@ class MenuSeeder extends Seeder
             ]
         );
 
-        // أصناف الشاي
         MenuItem::updateOrCreate(
             ['name' => 'Earl Grey Tea', 'subcategory_id' => $teaSub->id],
             [
@@ -150,7 +147,7 @@ class MenuSeeder extends Seeder
                 'price' => 18.00,
                 'description' => 'Creamy black truffle sauce with wild forest mushrooms',
                 'preparation_time' => 22,
-                'availability' => 'out_of_stock', // تجربة عنصر غير متاح
+                'availability' => 'out_of_stock', // sample out-of-stock item
                 'image' => $sampleImagePath,
                 'special_tags' => ["Chef's Special"]
             ]

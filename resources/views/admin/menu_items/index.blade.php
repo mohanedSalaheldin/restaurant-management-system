@@ -11,7 +11,6 @@
         </a>
     </div>
 
-    <!-- شريط الفلترة المتعدد والبحث -->
     <div class="card shadow-sm border-0 mb-3">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.menu-items.index') }}" class="row g-2">

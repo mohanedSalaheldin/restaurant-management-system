@@ -26,7 +26,7 @@ class MenuItem extends Model
     protected $casts = [
         'price' => 'decimal:2',
         'preparation_time' => 'integer',
-        'special_tags' => 'array', // تحويل مصفوفة الـ JSON تلقائياً إلى PHP Array
+        'special_tags' => 'array',
     ];
 
     public function section(): BelongsTo
@@ -49,17 +49,11 @@ class MenuItem extends Model
         return $this->belongsToMany(Offer::class, 'offer_menu_item')->withTimestamps();
     }
 
-    /**
-     * الحصول على العرض النشط الحالي لهذا الصنف (إن وُجد)
-     */
     public function getActiveOfferAttribute(): ?Offer
     {
         return $this->offers->first(fn($offer) => $offer->isValidNow());
     }
 
-    /**
-     * الحصول على السعر النهائي بعد الخصم
-     */
     public function getFinalPriceAttribute(): float
     {
         $activeOffer = $this->active_offer;

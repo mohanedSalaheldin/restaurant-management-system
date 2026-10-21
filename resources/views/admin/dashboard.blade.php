@@ -4,7 +4,6 @@
 @section('page_title', 'Admin Overview')
 
 @section('content')
-<!-- بطاقات الإحصائيات المطلوبة في المشروع -->
 <div class="row g-3 mb-4">
     <div class="col-xl-3 col-sm-6">
         <div class="card shadow-sm border-0 border-start border-success border-4">
@@ -40,7 +39,6 @@
     </div>
 </div>
 
-<!-- جدول أحدث 10 طلبات والروابط السريعة -->
 <div class="row g-4">
     <div class="col-lg-8">
         <div class="card shadow-sm border-0">

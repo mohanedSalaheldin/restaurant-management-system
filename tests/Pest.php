@@ -48,3 +48,33 @@ function something()
 {
     // ..
 }
+
+function userWithRole(App\Enum\UserRole $role, array $attributes = []): App\Models\User
+{
+    return App\Models\User::factory()->create(['role' => $role, ...$attributes]);
+}
+
+/**
+ * Seeds a full menu hierarchy: Drinks Menu > Hot Beverages > Coffee > Espresso
+ *
+ * @return array{section: App\Models\Section, category: App\Models\Category, subcategory: App\Models\Subcategory, item: App\Models\MenuItem}
+ */
+function seedDrinksMenu(): array
+{
+    $section = App\Models\Section::create(['name' => 'Drinks Menu', 'display_order' => 1, 'status' => true]);
+    $category = App\Models\Category::create(['section_id' => $section->id, 'name' => 'Hot Beverages', 'display_order' => 1, 'status' => true]);
+    $subcategory = App\Models\Subcategory::create(['category_id' => $category->id, 'name' => 'Coffee', 'display_order' => 1, 'status' => true]);
+    $item = App\Models\MenuItem::create([
+        'section_id' => $section->id,
+        'category_id' => $category->id,
+        'subcategory_id' => $subcategory->id,
+        'name' => 'Espresso',
+        'price' => 3.50,
+        'image' => 'menu_items/espresso.jpg',
+        'preparation_time' => 10,
+        'availability' => 'available',
+        'special_tags' => ['Vegan', 'Spicy'],
+    ]);
+
+    return compact('section', 'category', 'subcategory', 'item');
+}

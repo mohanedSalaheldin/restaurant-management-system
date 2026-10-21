@@ -28,9 +28,7 @@ class ProfileController extends Controller
         $user = $request->user();
         $validatedData = $request->validated();
 
-        // رفع وتحديث الصورة الشخصية إذا تم اختيار صورة جديدة
         if ($request->hasFile('avatar')) {
-            // حذف الصورة السابقة إن كانت موجودة
             if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
                 Storage::disk('public')->delete($user->avatar);
             }

@@ -61,7 +61,6 @@
             </div>
         </div>
 
-        <!-- معلومات جانبية وتغيير الحالة -->
         <div class="col-lg-4">
             <div class="card shadow-sm border-0 mb-3">
                 <div class="card-header bg-white py-3">
@@ -81,7 +80,6 @@
                     <p class="mb-3 text-muted small">Placed At: <strong
                             class="text-dark">{{ $order->created_at->format('M d, Y h:i A') }}</strong></p>
 
-                    <!-- تغيير الحالة -->
                     @if (!in_array($order->status, ['completed', 'cancelled']))
                         <form action="{{ route('orders.update-status', $order) }}" method="POST">
                             @csrf
@@ -94,6 +92,9 @@
                                 @elseif($order->status === 'ready')
                                     <button type="submit" name="status" value="served"
                                         class="btn btn-primary btn-sm w-100">Mark as Served</button>
+                                @elseif($order->status === 'served')
+                                    <button type="submit" name="status" value="completed"
+                                        class="btn btn-success btn-sm w-100">Mark as Completed</button>
                                 @endif
                                 <button type="submit" name="status" value="cancelled"
                                     class="btn btn-outline-danger btn-sm"

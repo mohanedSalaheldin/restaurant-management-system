@@ -1,5 +1,5 @@
-<h1>لوحة الكاشير / صفحة الفواتير (Cashier Dashboard)</h1>
+<h1>Cashier Dashboard</h1>
 <form method="POST" action="{{ route('logout') }}">
     @csrf
-    <button type="submit">تسجيل الخروج</button>
+    <button type="submit">Log Out</button>
 </form>

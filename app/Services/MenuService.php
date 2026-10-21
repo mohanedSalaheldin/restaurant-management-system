@@ -24,7 +24,6 @@ class MenuService
 
     public function deleteSection(Section $section): void
     {
-        // التحقق من شرط المشروع: منع حذف القسم إذا احتوى تصنيفات
         if ($section->categories()->exists()) {
             throw new Exception("Cannot delete section containing active categories.");
         }
@@ -46,7 +45,6 @@ class MenuService
 
     public function deleteCategory(Category $category): void
     {
-        // التحقق من شرط المشروع: منع الحذف إذا احتوى تصنيفات فرعية أو أصناف
         if ($category->subcategories()->exists() || $category->items()->exists()) {
             throw new Exception("Cannot delete category containing subcategories or items.");
         }
@@ -69,7 +67,6 @@ class MenuService
 
     public function deleteSubcategory(Subcategory $subcategory): void
     {
-        // التحقق من شرط المشروع: منع حذف التصنيف الفرعي إذا احتوى أصنافاً
         if ($subcategory->items()->exists()) {
             throw new Exception("Cannot delete subcategory containing active menu items.");
         }
@@ -102,6 +99,11 @@ class MenuService
 
     public function deleteMenuItem(\App\Models\MenuItem $item): void
     {
+        // order_items restricts deletes, so ordered items must be kept
+        if (\App\Models\OrderItem::where('menu_item_id', $item->id)->exists()) {
+            throw new Exception("Cannot delete menu item that exists in previous orders. Mark it as out of stock instead.");
+        }
+
         if ($item->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($item->image)) {
             \Illuminate\Support\Facades\Storage::disk('public')->delete($item->image);
         }

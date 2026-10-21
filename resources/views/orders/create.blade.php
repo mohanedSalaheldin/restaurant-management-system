@@ -7,7 +7,6 @@
     <form action="{{ route('orders.store') }}" method="POST" id="orderForm">
         @csrf
         <div class="row g-3">
-            <!-- القسم الأيسر: تصفح واختيار الأصناف -->
             <div class="col-lg-7">
                 <div class="card shadow-sm border-0 mb-3">
                     <div class="card-body">
@@ -25,7 +24,6 @@
                             </div>
                         </div>
 
-                        <!-- شبكة الأصناف المتاحة -->
                         <div class="row g-2 overflow-auto" style="max-height: 550px;" id="menuItemsGrid">
                             @foreach ($menuItems as $item)
                                 <div class="col-md-4 col-sm-6 menu-item-card" data-name="{{ strtolower($item->name) }}"
@@ -64,14 +62,12 @@
                 </div>
             </div>
 
-            <!-- القسم الأيمن: تفاصيل الطلب والسلة -->
             <div class="col-lg-5">
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-white py-3">
                         <h6 class="mb-0 fw-bold"><i class="bi bi-cart3 me-1"></i> Order Summary & Table</h6>
                     </div>
                     <div class="card-body">
-                        <!-- تفاصيل نوع الطلب والطاولة -->
                         <div class="row g-2 mb-3">
                             <div class="col-6">
                                 <label class="form-label small fw-semibold">Order Type</label>
@@ -103,14 +99,12 @@
                             </div>
                         </div>
 
-                        <!-- سلة الأصناف المضافة -->
                         <h6 class="fw-bold border-bottom pb-2 small text-secondary">Ordered Items</h6>
                         <div id="cartItemsContainer" class="overflow-auto mb-3" style="max-height: 280px;">
                             <p class="text-muted small text-center py-4" id="emptyCartText">No items added yet. Click on
                                 menu items to add.</p>
                         </div>
 
-                        <!-- ملخص الحساب -->
                         <div class="border-top pt-2 mb-3">
                             <div class="d-flex justify-content-between text-muted small mb-1">
                                 <span>Subtotal:</span>
@@ -126,7 +120,6 @@
                             </div>
                         </div>
 
-                        <!-- أزرار الإجراءات -->
                         <div class="d-flex gap-2">
                             <button type="submit" name="status" value="draft" class="btn btn-outline-secondary w-50">
                                 <i class="bi bi-save me-1"></i> Save Draft
@@ -196,6 +189,10 @@
             }
         }
 
+        function escapeHtml(value) {
+            return String(value ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"}[c]));
+        }
+
         function renderCart() {
             const container = document.getElementById('cartItemsContainer');
             const emptyText = document.getElementById('emptyCartText');
@@ -225,7 +222,7 @@
                 html += `
                 <div class="card p-2 mb-2 bg-light border-0">
                     <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span class="fw-bold small">${item.name}</span>
+                        <span class="fw-bold small">${escapeHtml(item.name)}</span>
                         <span class="fw-bold text-dark small">$${lineSubtotal.toFixed(2)}</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
@@ -235,12 +232,12 @@
                             <button type="button" class="btn btn-outline-secondary" onclick="updateQty(${item.id}, 1)">+</button>
                         </div>
                         <input type="text" class="form-control form-control-sm ms-2" placeholder="Instructions (e.g. no salt)" 
-                               value="${item.instructions}" onchange="updateInstructions(${item.id}, this.value)">
+                               value="${escapeHtml(item.instructions)}" onchange="updateInstructions(${item.id}, this.value)">
                     </div>
                     <!-- Hidden inputs for Form Submission -->
                     <input type="hidden" name="items[${index}][menu_item_id]" value="${item.id}">
                     <input type="hidden" name="items[${index}][quantity]" value="${item.quantity}">
-                    <input type="hidden" name="items[${index}][special_instructions]" value="${item.instructions}">
+                    <input type="hidden" name="items[${index}][special_instructions]" value="${escapeHtml(item.instructions)}">
                 </div>
             `;
             });
@@ -251,7 +248,6 @@
             document.getElementById('cartTotal').innerText = `$${(subtotal - totalDiscount).toFixed(2)}`;
         }
 
-        // فلترة الأصناف في الواجهة
         document.getElementById('itemSearch').addEventListener('input', filterMenu);
         document.getElementById('categoryFilter').addEventListener('change', filterMenu);
 

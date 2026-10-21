@@ -9,6 +9,7 @@ use App\Models\MenuItem;
 use App\Models\Section;
 use App\Models\Subcategory;
 use App\Services\MenuService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -79,13 +80,16 @@ class MenuItemController extends Controller
 
     public function destroy(MenuItem $menuItem): RedirectResponse
     {
-        $this->menuService->deleteMenuItem($menuItem);
-
-        return redirect()->route('admin.menu-items.index')
-            ->with('success', 'Menu item deleted successfully.');
+        try {
+            $this->menuService->deleteMenuItem($menuItem);
+            return redirect()->route('admin.menu-items.index')
+                ->with('success', 'Menu item deleted successfully.');
+        } catch (Exception $e) {
+            return redirect()->route('admin.menu-items.index')
+                ->with('error', $e->getMessage());
+        }
     }
 
-    // دوال مساعدة لجلب البيانات للـ Cascading Dropdowns
     public function getCategoriesBySection(Section $section): JsonResponse
     {
         return response()->json($section->categories()->where('status', true)->get());

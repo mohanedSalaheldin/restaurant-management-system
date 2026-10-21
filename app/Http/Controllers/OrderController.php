@@ -19,9 +19,6 @@ class OrderController extends Controller
         protected OrderService $orderService
     ) {}
 
-    /**
-     * قائمة الطلبات (للنادل والمدير)
-     */
     public function index(Request $request): View
     {
         $orders = Order::with(['table', 'user', 'items.menuItem'])
@@ -34,9 +31,6 @@ class OrderController extends Controller
         return view('orders.index', compact('orders'));
     }
 
-    /**
-     * شاشة تسجيل طلب جديد للنادل
-     */
     public function create(): View
     {
         $tables = Table::where('status', 'available')->orderBy('table_number')->get();
@@ -50,9 +44,6 @@ class OrderController extends Controller
         return view('orders.create', compact('tables', 'categories', 'menuItems'));
     }
 
-    /**
-     * حفظ الطلب
-     */
     public function store(OrderRequest $request): RedirectResponse
     {
         try {
@@ -76,18 +67,12 @@ class OrderController extends Controller
         }
     }
 
-    /**
-     * تفاصيل الطلب
-     */
     public function show(Order $order): View
     {
         $order->load(['table', 'user', 'items.menuItem']);
         return view('orders.show', compact('order'));
     }
 
-    /**
-     * تحديث حالة الطلب (إرسال للمطبخ، تقديم، إلخ)
-     */
     public function updateStatus(Request $request, Order $order): RedirectResponse
     {
         $request->validate([
