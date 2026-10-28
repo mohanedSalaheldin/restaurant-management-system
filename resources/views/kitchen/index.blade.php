@@ -218,4 +218,4 @@
         }, 15000);
     </script>
 @endpush
-@TODO: should finsh kitchen UI first in saturday
+{{-- TODO: finish the kitchen UI on Saturday --}}
