@@ -27,6 +27,14 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('orders/{order}/status', [\App\Http\Controllers\OrderController::class, 'updateStatus'])->name('orders.update-status');
     });
 
+    Route::middleware(['role:admin,cashier'])->group(function () {
+        Route::get('/billing', [\App\Http\Controllers\BillingController::class, 'index'])->name('billing.index');
+        Route::post('/billing/orders/{order}/generate', [\App\Http\Controllers\BillingController::class, 'createBill'])->name('billing.generate');
+        Route::get('/billing/invoices/{bill}', [\App\Http\Controllers\BillingController::class, 'show'])->name('billing.show');
+        Route::post('/billing/invoices/{bill}/pay', [\App\Http\Controllers\BillingController::class, 'processPayment'])->name('billing.pay');
+        Route::get('/billing/invoices/{bill}/receipt', [\App\Http\Controllers\BillingController::class, 'printReceipt'])->name('billing.receipt');
+    });
+
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', function () {
             return view('admin.dashboard');
@@ -45,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('tables', \App\Http\Controllers\Admin\TableController::class);
         Route::post('tables/{table}/regenerate-qr', [\App\Http\Controllers\Admin\TableController::class, 'regenerateQr'])->name('tables.regenerate.qr');
         Route::resource('offers', \App\Http\Controllers\Admin\OfferController::class);
+        Route::get('reports', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports.index');
         Route::resource('users', StaffController::class)->only(['index', 'create', 'store']);
     });
 

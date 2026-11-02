@@ -52,4 +52,14 @@ class User extends Authenticatable
 
         return $this->role === $roles;
     }
+
+    public function bills(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Bill::class);
+    }
+
+    public function payments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
 }

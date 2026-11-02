@@ -45,4 +45,9 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function bill(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Bill::class);
+    }
 }

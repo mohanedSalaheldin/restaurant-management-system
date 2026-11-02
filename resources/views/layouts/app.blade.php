@@ -124,14 +124,21 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link text-secondary">
-                        <i class="bi bi-bar-chart"></i> Reports
+                    <a href="{{ route('admin.reports.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
+                        <i class="bi bi-bar-chart"></i> Analytics & Reports
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('kitchen.kds') }}"
                         class="nav-link {{ request()->routeIs('kitchen.kds') ? 'active' : '' }}">
                         <i class="bi bi-fire"></i> KDS Screen
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('billing.index') }}"
+                        class="nav-link {{ request()->routeIs('billing.*') ? 'active' : '' }}">
+                        <i class="bi bi-receipt"></i> Billing & Payments
                     </a>
                 </li>
             @elseif($role === 'waiter')
@@ -171,8 +178,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link text-secondary">
-                        <i class="bi bi-receipt"></i> Orders for Billing
+                    <a href="{{ route('billing.index') }}"
+                        class="nav-link {{ request()->routeIs('billing.*') ? 'active' : '' }}">
+                        <i class="bi bi-receipt"></i> Billing & Payments
                     </a>
                 </li>
             @elseif($role === 'kitchen_staff')

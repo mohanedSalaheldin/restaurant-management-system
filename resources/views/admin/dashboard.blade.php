@@ -82,7 +82,7 @@
                 <a href="#" class="btn btn-outline-secondary text-start">
                     <i class="bi bi-grid-3x3-gap me-2"></i>Manage Tables
                 </a>
-                <a href="#" class="btn btn-outline-secondary text-start">
+                <a href="{{ route('admin.reports.index') }}" class="btn btn-outline-secondary text-start">
                     <i class="bi bi-bar-chart me-2"></i>View Reports
                 </a>
             </div>
