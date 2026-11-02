@@ -15,6 +15,8 @@ Route::get('/', function () {
 
 Route::get('/table/{table_number}/{token}', [\App\Http\Controllers\PublicTableController::class, 'show'])->name('table.qr.view');
 
+Route::post('/stripe/webhook', [\App\Http\Controllers\StripeController::class, 'webhook'])->name('stripe.webhook');
+
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -33,6 +35,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/billing/invoices/{bill}', [\App\Http\Controllers\BillingController::class, 'show'])->name('billing.show');
         Route::post('/billing/invoices/{bill}/pay', [\App\Http\Controllers\BillingController::class, 'processPayment'])->name('billing.pay');
         Route::get('/billing/invoices/{bill}/receipt', [\App\Http\Controllers\BillingController::class, 'printReceipt'])->name('billing.receipt');
+        Route::get('/stripe/checkout/{bill}', [\App\Http\Controllers\StripeController::class, 'checkout'])->name('stripe.checkout');
+        Route::get('/stripe/success', [\App\Http\Controllers\StripeController::class, 'success'])->name('stripe.success');
     });
 
     Route::middleware(['role:admin'])->prefix('admin')->name('admin.')->group(function () {

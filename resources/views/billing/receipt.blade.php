@@ -67,6 +67,7 @@
 
         .btn-back {
             display: block;
+            box-sizing: border-box;
             width: 100%;
             padding: 8px;
             background: #6c757d;

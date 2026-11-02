@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         //
+        // Stripe cannot send a CSRF token; the webhook verifies its signature instead.
+        $middleware->validateCsrfTokens(except: ['stripe/webhook']);
+
         $middleware->alias([
             'role' => CheckRole::class,
         ]);

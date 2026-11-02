@@ -102,3 +102,20 @@ test('2.5 menu display shows sections, items and special tags', function () {
         ->assertSee('Vegan')
         ->assertSee('Spicy');
 });
+
+test('replacing or deleting an item image keeps a file other items still use', function () {
+    Illuminate\Support\Facades\Storage::fake('public');
+    Illuminate\Support\Facades\Storage::disk('public')->put('menu_items/shared.jpg', 'image');
+
+    $service = app(App\Services\MenuService::class);
+    $this->menu['item']->update(['image' => 'menu_items/shared.jpg']);
+    $other = $this->menu['item']->replicate();
+    $other->name = 'Double Espresso';
+    $other->save();
+
+    $service->updateMenuItem($this->menu['item'], [], Illuminate\Http\UploadedFile::fake()->image('new.jpg'));
+    Illuminate\Support\Facades\Storage::disk('public')->assertExists('menu_items/shared.jpg');
+
+    $service->deleteMenuItem($other);
+    Illuminate\Support\Facades\Storage::disk('public')->assertMissing('menu_items/shared.jpg');
+});

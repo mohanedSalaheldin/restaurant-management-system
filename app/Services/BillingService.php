@@ -56,6 +56,9 @@ class BillingService
     public function recordPayment(Bill $bill, array $paymentData, int $cashierId): Payment
     {
         return DB::transaction(function () use ($bill, $paymentData, $cashierId) {
+            // Locked because the Stripe redirect and webhook can arrive at the same moment.
+            $bill = Bill::lockForUpdate()->findOrFail($bill->id);
+
             if ($bill->status === 'paid') {
                 throw new Exception("This bill has already been fully paid.");
             }

@@ -158,3 +158,12 @@ test('table stays occupied while another order on it is active', function () {
 
     expect($this->table->fresh()->status)->toBe('occupied');
 });
+
+test('KDS cards keep the status border that border-0 would remove', function () {
+    placeOrder($this);
+
+    $this->actingAs($this->chef)
+        ->get('/kitchen/kds')
+        ->assertSee('class="card h-100 shadow-sm order-card', false)
+        ->assertDontSee('border-0 order-card', false);
+});

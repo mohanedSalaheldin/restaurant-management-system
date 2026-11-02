@@ -61,7 +61,7 @@
                 @endphp
                 <div class="col-xl-3 col-lg-4 col-md-6" id="order-card-{{ $ord->id }}">
                     <div
-                        class="card h-100 shadow-sm border-0 order-card {{ $ord->status === 'in_preparation' ? 'status-prep' : '' }}">
+                        class="card h-100 shadow-sm order-card {{ $ord->status === 'in_preparation' ? 'status-prep' : '' }}">
                         <div
                             class="card-header bg-white py-2 d-flex justify-content-between align-items-center border-bottom">
                             <div>
@@ -201,7 +201,10 @@
 
         function checkEmptyQueue() {
             const grid = document.getElementById('kitchenGrid');
-            if (grid.querySelectorAll('.order-card').length === 0) {
+            const remaining = grid.querySelectorAll('.order-card').length;
+            document.getElementById('totalOrdersCount').innerText = `${remaining} Active Orders`;
+
+            if (remaining === 0) {
                 window.location.reload();
             }
         }

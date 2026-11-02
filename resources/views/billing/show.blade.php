@@ -120,6 +120,12 @@
                             <button type="submit" class="btn btn-success btn-lg w-100">
                                 <i class="bi bi-check-circle-fill me-1"></i> Complete & Print
                             </button>
+                            <div class="mt-3">
+                                <a href="{{ route('stripe.checkout', $bill) }}"
+                                    class="btn btn-outline-primary w-100 py-2 fw-bold">
+                                    <i class="bi bi-credit-card-2-front me-1"></i> Pay Online via Stripe Checkout
+                                </a>
+                            </div>
                         </form>
                     </div>
                 </div>

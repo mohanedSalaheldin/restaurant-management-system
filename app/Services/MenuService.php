@@ -87,9 +87,7 @@ class MenuService
     public function updateMenuItem(\App\Models\MenuItem $item, array $data, ?\Illuminate\Http\UploadedFile $image = null): \App\Models\MenuItem
     {
         if ($image) {
-            if ($item->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($item->image)) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($item->image);
-            }
+            $this->deleteImageIfUnused($item);
             $data['image'] = $image->store('menu_items', 'public');
         }
 
@@ -104,9 +102,19 @@ class MenuService
             throw new Exception("Cannot delete menu item that exists in previous orders. Mark it as out of stock instead.");
         }
 
-        if ($item->image && \Illuminate\Support\Facades\Storage::disk('public')->exists($item->image)) {
+        $this->deleteImageIfUnused($item);
+        $item->delete();
+    }
+
+    /**
+     * Several items can share one file (the seeder does this), so it is only removed with its last user.
+     */
+    protected function deleteImageIfUnused(\App\Models\MenuItem $item): void
+    {
+        $isShared = \App\Models\MenuItem::where('image', $item->image)->where('id', '!=', $item->id)->exists();
+
+        if ($item->image && ! $isShared) {
             \Illuminate\Support\Facades\Storage::disk('public')->delete($item->image);
         }
-        $item->delete();
     }
 }
